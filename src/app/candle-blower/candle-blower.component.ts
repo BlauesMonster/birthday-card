@@ -148,7 +148,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
       .candle .body {
         width: 20px; /* Adjust width for visibility */
         height: 100px; /* Adjust height to look like a candle */
-        background: linear-gradient(to bottom, white, #ff5c5c);
+        background: linear-gradient(to bottom, white, #388e3c);
         border-radius: 5px;
         position: relative;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
