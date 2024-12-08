@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {CommonModule, NgFor, NgForOf, NgIf} from '@angular/common';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -20,35 +20,116 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
   ],
 
   template: `
-    <div>
-      <h1>Blow Out the Candles!</h1>
-      <div class="circle">
-        <div
-          *ngFor="let candle of candles; let i = index"
-          class="candle"
-          [style.transform]="calculatePosition(i).transform"
-          [style.zIndex]="calculatePosition(i).zIndex"
-        >
-          <div class="body"></div>
-          <div class="wick" *ngIf="candle.blownOut"></div>
-          <div class="flame" *ngIf="!candle.blownOut"></div>
-          <div class="smoke" *ngIf="candle.blownOut" [@blowOut]="'blown'"></div>
+    <div class="text-container">
+      <div class="card">
+        <h1>Alles Gute zum Geburtstag</h1>
+        <div class="description">Ich hoffe alle deine Wünsche gehen in Erfüllung</div>
+        <div>
+          <div class="btn">
+            <button class="birthday-button" (click)="startListening()">{{ listening ? 'Restart' : 'Drück mich und puste!' }}</button>
+
+          </div>
+          <div class="circle">
+            <div
+              *ngFor="let candle of candles; let i = index"
+              class="candle"
+              [style.transform]="calculatePosition(i).transform"
+              [style.zIndex]="calculatePosition(i).zIndex"
+            >
+              <div class="body"></div>
+              <div class="wick" *ngIf="candle.blownOut"></div>
+              <div class="flame" *ngIf="!candle.blownOut"></div>
+              <div class="smoke" *ngIf="candle.blownOut" [@blowOut]="'blown'"></div>
+            </div>
+          </div>
         </div>
+
+        <!--      <button (click)="addCandle()">Add Candle</button>-->
+
+        <!--<p>{{candlesCount}}</p>-->
       </div>
-      <button (click)="addCandle()">Add Candle</button>
-      <button (click)="startListening()">{{ listening ? 'Restart' : 'Start' }}</button>
-      <p>{{candlesCount}}</p>
     </div>
+
   `,
   styles: [
 
 
+
     `
+      .btn{
+        display: flex
+      ;
+        justify-content: center;
+      }
+      .birthday-button {
+        background-color: #4caf50; /* Bright green background */
+        color: white; /* White text color */
+        border: none; /* Remove default border */
+        height: 3rem; /* Button height */
+        border-radius: 20px; /* Rounded edges */
+        padding: 15px 30px; /* Padding for a bigger button */
+        font-size: 18px; /* Larger text */
+        font-weight: bold; /* Bold text */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Transition effects */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+      }
+
+      .birthday-button:hover {
+        background-color: #388e3c; /* Darker green on hover */
+        transform: scale(1.05); /* Slightly enlarge the button on hover */
+      }
+
+      .birthday-button:active {
+        transform: scale(0.95); /* Slightly shrink the button when clicked */
+      }
+
+      .text-container {
+        position: relative; /* Positioning context for the overlay */
+        padding: 20px; /* Add some padding around the text */
+        text-align: center; /* Center the text */
+        height: 100%;
+      }
+
+      .text-container h1 {
+        color: white; /* White text color for the title */
+        font-size: 2.5rem; /* Increase the size of the title */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow for better readability */
+        margin: 0; /* Remove default margin */
+      }
+
+      .text-container .description {
+        color: white; /* White text color for the description */
+        font-size: 1.5rem; /* Size of the description text */
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Add shadow for better readability */
+      }
+
+      /* Overlay styling */
+      .text-container::before {
+        content: ''; /* Required for pseudo-element */
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+        z-index: -100; /* Position behind the text */
+        border-radius: 20px; /* Optional: match button rounded edges */
+      }
+
+
+      .card{
+        display: grid;
+        grid-template-rows: auto 1fr 3fr;
+        align-items: center;
+        height: 100%;
+      }
 
       .circle {
         position: relative;
         width: 300px;
-        height: 300px;
+        height: 380px;
+        bottom: 30px;
         margin: 0 auto;
         border-radius: 50%;
       }
@@ -147,10 +228,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
   ],
 })
 export class CandleBlowerComponent {
-  candles = [
-    { id: 1, blownOut: false, threshold: 100 },
-    { id: 2, blownOut: false, threshold: 150 },
-    { id: 3, blownOut: false, threshold: 254 },
+  candles:any[] = [
+
   ];
 
 
@@ -158,7 +237,7 @@ export class CandleBlowerComponent {
     const newCandle = {
       id: this.candles.length + 1,
       blownOut: false,
-      threshold: Math.random() * 50 + 80, // Random threshold
+      threshold: Math.floor(Math.random() * (254 - 140 + 1)) + 140 // Random threshold
     };
     this.candles.push(newCandle);
     this.candlesCount = this.candles.length;
@@ -170,7 +249,11 @@ export class CandleBlowerComponent {
   private microphone!: MediaStreamAudioSourceNode;
   private dataArray!: Uint8Array;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    for (let i = 0; i < this.amount; i++) {
+      this.addCandle()
+    }
+  }
 
   async startListening() {
     if (this.listening) {
@@ -220,6 +303,7 @@ export class CandleBlowerComponent {
   }
 
   listening = false;
+  @Input() amount!: number;
   resetCandles() {
     this.candles.forEach((c) => (c.blownOut = false));
   }
