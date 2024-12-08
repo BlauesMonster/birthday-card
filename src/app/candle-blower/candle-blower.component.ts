@@ -22,11 +22,11 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
   template: `
     <div class="text-container">
       <div class="card">
-        <h1>Alles Gute zum Geburtstag</h1>
-        <div class="description">Ich hoffe alle deine Wünsche gehen in Erfüllung</div>
+        <h1>Alles Gute zum Geburtstag, Franzi!</h1>
+        <div class="description">Ich hoffe alle deine Wünsche gehen in Erfüllung :)</div>
         <div>
           <div class="btn">
-            <button class="birthday-button" (click)="startListening()">{{ listening ? 'Restart' : 'Drück mich und puste!' }}</button>
+            <button class="birthday-button" (click)="startListening()">{{ listening ? 'Nochmal!' : 'Drück mich und puste!' }}</button>
 
           </div>
           <div class="circle">
@@ -64,6 +64,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
       .birthday-button {
         background-color: #4caf50; /* Bright green background */
         color: white; /* White text color */
+        z-index: 1000;
         border: none; /* Remove default border */
         height: 3rem; /* Button height */
         border-radius: 20px; /* Rounded edges */

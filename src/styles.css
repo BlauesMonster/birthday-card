@@ -1,13 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
 html{
-  height: 100%;
+
 }
 body{
   display: block;
   height: 100%;
   margin: 0; /* Remove default margin */
-  background-image: url('../public/img/b6.png'); /* Set the path to your image */
+  background-image: url('../public/img/b2.png'); /* Set the path to your image */
   background-size: cover; /* Cover the entire area */
   background-position: center; /* Center the background image */
   background-repeat: no-repeat; /* Prevent the background from repeating */
